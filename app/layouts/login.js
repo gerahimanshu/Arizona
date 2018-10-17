@@ -23,8 +23,7 @@ export default class Login extends Component{
     }
 
     onLogin = () => {
-        console.warn(this.state.email)
-        console.warn(this.state.password)
+        //TODO: Perform login task..
     }
 
     render(){
@@ -54,7 +53,7 @@ export default class Login extends Component{
 
 const styles = StyleSheet.create({
     container:{
-        flex: 1,
+        flexGrow: 1,
         backgroundColor: colors.grayBackground
     },
     loginText:{
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignSelf: 'center',
         justifyContent: 'center',
-        position: "absolute",
+        position: 'absolute',
         bottom: -25
     },
     buttonText:{
