@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import colors from '../utils/colors';
-import strings from '../utils/strings';
-import Entry from '../components/entry'
+import React, {Component} from 'react'
+import {View, StyleSheet, Text, TouchableOpacity, ImageBackground, Image} from 'react-native'
+import colors from '../utils/colors'
+import images from '../images/index'
+import strings from '../utils/strings'
+import CustomTextInput from '../components/customTextInput'
 
 export default class Login extends Component{
 
@@ -28,65 +29,63 @@ export default class Login extends Component{
 
     render(){
         return(
-            <View style={styles.container}>
-                <Text style={styles.loginText}>
-                    {strings.login}
-                </Text>
-                <View>
-                    <View style={styles.centerViewContainer}>
-                        <Entry 
-                            name={strings.email}  
-                            onEmailChange={this.onEmailChange}/>
-                        <Entry 
-                            name={strings.password} 
-                            marginTop={40} 
-                            onPasswordChange={this.onPasswordChange}/>
-                    </View>
-                    <TouchableOpacity style={styles.button} onPress={() => {this.onLogin()}}>
-                        <Text style={styles.buttonText}>{strings.loginButton}</Text>
+            <ImageBackground source={images.background} style={styles.container}>
+                <Image source={images.logo}/>
+                <View style={styles.emailView}>
+                    <CustomTextInput type='email'/>
+                </View>
+                <View style={styles.passwordView}>
+                    <CustomTextInput type='password' />
+                </View>
+                <TouchableOpacity>
+                    <Text style={styles.forgotPasswordText}>{strings.forgotPassword}</Text>
+                </TouchableOpacity>
+                <View style={styles.loginOuterView}>
+                    <TouchableOpacity style={styles.loginButton}> 
+                        <Text>{strings.loginButton}</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </ImageBackground>
         )
     }
 }
 
 const styles = StyleSheet.create({
     container:{
-        flexGrow: 1,
-        backgroundColor: colors.grayBackground
-    },
-    loginText:{
-        marginTop: 36,
-        marginLeft: 33,
-        fontSize: 48,
-        fontFamily: 'sfuitextregular',
-        color: colors.textBlack
-    },
-    centerViewContainer:{
-        backgroundColor: colors.white,
-        marginLeft: 32,
-        marginRight: 32,
-        marginTop: 80,
-        borderRadius: 10,
-        paddingTop: 40,
-        paddingBottom: 60
-    },
-    button:{
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 60,
-        paddingRight: 60,
-        backgroundColor: colors.blue,
+        flex: 1,
         alignItems: 'center',
-        borderRadius: 10,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        bottom: -25
+        justifyContent: 'center'
     },
-    buttonText:{
+    emailView: {
+        width: '100%', 
+        marginTop: 100
+    },
+    passwordView: {
+        width: '100%', 
+        marginTop: 20
+    },
+    forgotPasswordText: {
         color: colors.white,
-        fontSize: 18
+        fontSize: 14,
+        marginTop: 20
+    },
+    loginOuterView: {
+        width: '100%'
+    },
+    loginText: {
+        color: colors.textBlack,
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
+    loginButton: {
+        borderRadius: 20,
+        backgroundColor: colors.white,
+        marginLeft: 20,
+        marginRight: 20,
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20,
+        padding: 15
     }
 })

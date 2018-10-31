@@ -1,14 +1,20 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import React, {Component} from 'react'
+import images from '../images/index'
+import {StyleSheet, Image, ImageBackground} from 'react-native'
 
 export default class Splash extends Component{
+
+    componentWillMount(){
+        setTimeout(() => {
+            this.props.navigation.navigate('Login')
+        }, 3000)
+    }
+
     render(){
         return(
-            <View style={styles.container}>
-                <Text style={{fontSize: 30, fontFamily: 'sfuitextregular'}}>
-                    Arizona Academy
-                </Text>
-            </View>
+            <ImageBackground source={images.background} style={styles.container}>
+                <Image source={images.logo}/>
+            </ImageBackground>
         )
     }
 }
