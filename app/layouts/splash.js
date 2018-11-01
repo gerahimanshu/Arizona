@@ -1,12 +1,20 @@
 import React, {Component} from 'react'
 import images from '../images/index'
 import {StyleSheet, Image, ImageBackground} from 'react-native'
+import { StackActions, NavigationActions } from 'react-navigation'
+import { registerFirebaseAuthChanged } from '../firebase/queries'
 
 export default class Splash extends Component{
 
     componentWillMount(){
+        registerFirebaseAuthChanged()
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Login' })],
+        });
+
         setTimeout(() => {
-            this.props.navigation.navigate('Login')
+            this.props.navigation.dispatch(resetAction);
         }, 3000)
     }
 

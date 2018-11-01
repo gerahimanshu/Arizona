@@ -8,6 +8,10 @@ import colors from '../utils/colors'
 import strings from '../utils/strings'
 
 const CustomTextInput = (props) => {
+    const {
+        onEmailChange,
+        onPasswordChange
+    } = props
     return (
         <View style={styles.container}>
             {
@@ -16,6 +20,7 @@ const CustomTextInput = (props) => {
                         placeholder={strings.email} 
                         placeholderTextColor={colors.white} 
                         style={styles.textInput}
+                        onChangeText={onEmailChange}
                     />
                 ) : (
                     <TextInput 
@@ -23,6 +28,7 @@ const CustomTextInput = (props) => {
                         placeholderTextColor={colors.white}
                         secureTextEntry={true}
                         style={styles.textInput}
+                        onChangeText={onPasswordChange}
                     />
                 )
             }

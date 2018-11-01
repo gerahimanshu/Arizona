@@ -4,6 +4,7 @@ import colors from '../utils/colors'
 import images from '../images/index'
 import strings from '../utils/strings'
 import CustomTextInput from '../components/customTextInput'
+import {checkForLogin} from '../firebase/queries'
 
 export default class Login extends Component{
 
@@ -25,7 +26,16 @@ export default class Login extends Component{
 
     onLogin = () => {
         //TODO: Perform login task..
-        this.props.navigation.navigate('Home')
+        console.warn(this.state.email, this.state.password)
+        checkForLogin(this.state.email, this.state.password)
+        .then(user => {
+            if(user){
+                this.props.navigation.navigate('Home')
+            }
+        })
+        .catch(error => {
+            alert(error.message)
+        })
     }
 
     render(){
@@ -33,10 +43,10 @@ export default class Login extends Component{
             <ImageBackground source={images.background} style={styles.container}>
                 <Image source={images.logo}/>
                 <View style={styles.emailView}>
-                    <CustomTextInput type='email'/>
+                    <CustomTextInput type='email' onEmailChange={this.onEmailChange}/>
                 </View>
                 <View style={styles.passwordView}>
-                    <CustomTextInput type='password' />
+                    <CustomTextInput type='password' onPasswordChange={this.onPasswordChange}/>
                 </View>
                 <TouchableOpacity>
                     <Text style={styles.forgotPasswordText}>{strings.forgotPassword}</Text>
