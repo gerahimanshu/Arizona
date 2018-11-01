@@ -25,6 +25,7 @@ export default class Login extends Component{
 
     onLogin = () => {
         //TODO: Perform login task..
+        this.props.navigation.navigate('Home')
     }
 
     render(){
@@ -41,7 +42,7 @@ export default class Login extends Component{
                     <Text style={styles.forgotPasswordText}>{strings.forgotPassword}</Text>
                 </TouchableOpacity>
                 <View style={styles.loginOuterView}>
-                    <TouchableOpacity style={styles.loginButton}> 
+                    <TouchableOpacity style={styles.loginButton} onPress={() => this.onLogin()}> 
                         <Text>{strings.loginButton}</Text>
                     </TouchableOpacity>
                 </View>

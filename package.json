@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.3",
+    "react-native-material-bottom-navigation-performance": "^0.7.8",
     "react-navigation": "^2.18.2"
   },
   "devDependencies": {
