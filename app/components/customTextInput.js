@@ -6,6 +6,7 @@ import {
 } from 'react-native'
 import colors from '../utils/colors'
 import strings from '../utils/strings'
+import {heightScale, widthScale} from '../utils/utils'
 
 const CustomTextInput = (props) => {
     const {
@@ -20,6 +21,7 @@ const CustomTextInput = (props) => {
                         placeholder={strings.email} 
                         placeholderTextColor={colors.white} 
                         style={styles.textInput}
+                        autoCapitalize='none'
                         onChangeText={onEmailChange}
                     />
                 ) : (
@@ -40,9 +42,10 @@ const styles = StyleSheet.create({
     container: {
         borderRadius: 20,
         borderColor: colors.grayDivider,
-        marginLeft: 20,
-        marginRight: 20,
-        borderWidth: 1
+        marginLeft: widthScale(10),
+        marginRight: widthScale(10),
+        borderWidth: widthScale(1),
+        padding: widthScale(10)
     },
     textInput: {
         fontSize: 16,

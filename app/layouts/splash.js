@@ -8,14 +8,20 @@ export default class Splash extends Component{
 
     componentWillMount(){
         registerFirebaseAuthChanged()
-        const resetAction = StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'Login' })],
-        });
-
-        setTimeout(() => {
+        .then(res => {
+            const resetAction = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'Home' })],
+            });
             this.props.navigation.dispatch(resetAction);
-        }, 3000)
+        })
+        .catch(err => {
+            const resetAction = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'Login' })],
+            });
+            this.props.navigation.dispatch(resetAction);
+        })
     }
 
     render(){

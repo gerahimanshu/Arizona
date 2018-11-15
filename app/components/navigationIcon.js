@@ -1,5 +1,6 @@
 import React from 'react'
 import {Image, StyleSheet} from 'react-native'
+import {height, width} from '../utils/utils'
 
 const NavigationIcon = (props) => {
     return (
@@ -12,8 +13,8 @@ const NavigationIcon = (props) => {
 
 const styles = StyleSheet.create({
     image: {
-        height: 18,
-        width: 18
+        height: height(18),
+        width: width(18)
     }
 })
 

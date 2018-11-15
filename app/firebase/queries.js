@@ -20,12 +20,14 @@ export const loginAnonymously = () => {
  * Observer that gets callback for when user logs in or logs out..
  */
 export const registerFirebaseAuthChanged = () => {
-    firebaseApp.auth().onAuthStateChanged(user => {
-        if(user){
-            console.warn('loggedIn', user)
-        }else{
-            console.warn('loggedOut')
-        }
+    return new Promise((resolve, reject) => {
+        firebaseApp.auth().onAuthStateChanged(user => {
+            if(user){
+                resolve('loggedIn')
+            }else{
+                reject('loggedOut')
+            }
+        })
     })
 }
 
@@ -43,7 +45,6 @@ export const checkForLogin = (email, password) => {
                 const dataJSON = data.toJSON()
                 for(key in dataJSON){
                     const user = dataJSON[key]
-                    console.warn('data', user)
                     if(user.email && user.email == email){
                         if(user.password){
                             const dbPassword = user.password

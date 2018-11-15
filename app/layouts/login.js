@@ -1,10 +1,20 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Text, TouchableOpacity, ImageBackground, Image} from 'react-native'
+import {
+    View, 
+    StyleSheet, 
+    Text, 
+    TouchableOpacity, 
+    ImageBackground, 
+    Image, 
+    ActivityIndicator
+} from 'react-native'
 import colors from '../utils/colors'
 import images from '../images/index'
 import strings from '../utils/strings'
 import CustomTextInput from '../components/customTextInput'
-import {checkForLogin} from '../firebase/queries'
+import {checkForLogin, loginAnonymously} from '../firebase/queries'
+import {heightScale, widthScale} from '../utils/utils'
+import { StackActions, NavigationActions } from 'react-navigation'
 
 export default class Login extends Component{
 
@@ -12,7 +22,8 @@ export default class Login extends Component{
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            loading: false
         }
     }
 
@@ -25,15 +36,34 @@ export default class Login extends Component{
     }
 
     onLogin = () => {
-        //TODO: Perform login task..
-        console.warn(this.state.email, this.state.password)
+        
+        if(this.state.email == ''){
+            alert('Enter Email')
+            return 
+        }
+
+        if(this.state.password == ''){
+            alert('Enter Password')
+            return
+        }
+        
+        this.setState({loading: true})
         checkForLogin(this.state.email, this.state.password)
+        .then(res => {
+            return loginAnonymously()
+        })
         .then(user => {
+            this.setState({loading: false})
             if(user){
-                this.props.navigation.navigate('Home')
+                const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: 'Home' })],
+                });
+                this.props.navigation.dispatch(resetAction);
             }
         })
         .catch(error => {
+            this.setState({loading: false})
             alert(error.message)
         })
     }
@@ -56,6 +86,14 @@ export default class Login extends Component{
                         <Text>{strings.loginButton}</Text>
                     </TouchableOpacity>
                 </View>
+                {
+                    this.state.loading && (
+                        <View style={styles.loader}>
+                            <ActivityIndicator animating={true} size='large'/>
+                        </View>
+                    )
+                    
+                }
             </ImageBackground>
         )
     }
@@ -69,16 +107,16 @@ const styles = StyleSheet.create({
     },
     emailView: {
         width: '100%', 
-        marginTop: 100
+        marginTop: heightScale(50)
     },
     passwordView: {
         width: '100%', 
-        marginTop: 20
+        marginTop: heightScale(10)
     },
     forgotPasswordText: {
         color: colors.white,
         fontSize: 14,
-        marginTop: 20
+        marginTop: heightScale(10)
     },
     loginOuterView: {
         width: '100%'
@@ -91,12 +129,21 @@ const styles = StyleSheet.create({
     loginButton: {
         borderRadius: 20,
         backgroundColor: colors.white,
-        marginLeft: 20,
-        marginRight: 20,
+        marginLeft: widthScale(10),
+        marginRight: widthScale(10),
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
+        marginTop: heightScale(10),
         padding: 15
+    },
+    loader: {
+        position: 'absolute', 
+        top: 0, 
+        bottom: 0, 
+        left: 0, 
+        right: 0,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

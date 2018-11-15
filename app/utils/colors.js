@@ -3,7 +3,9 @@ const colors = {
     textBlack: '#101010',
     white: '#FFFFFF',
     grayDivider: '#BBBBBB',
-    blue: '#273C75'
+    blue: '#273C75',
+    lightBlue: 'rgb(40,166,231)',
+    darkBlue: 'rgb(9,21,61)'
 }
 
 export default colors;

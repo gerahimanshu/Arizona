@@ -14,7 +14,8 @@ const images = {
             profileSelected: require('./navigation/profile/selected/profileSelected.png'),
             profileUnselected: require('./navigation/profile/unselected/profileUnselected.png')
         }
-    }
+    },
+    downArrow: require('./downArrow/downarrow.png')
 }
 
 export default images
