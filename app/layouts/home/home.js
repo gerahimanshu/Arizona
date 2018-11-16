@@ -1,21 +1,42 @@
 import React, {Component} from 'react'
-import {View, ScrollView, Text, StyleSheet, Image, TouchableOpacity} from 'react-native'
+import {ScrollView, Text, StyleSheet, Image, TouchableOpacity} from 'react-native'
 import {heightScale, widthScale} from '../../utils/utils'
 import colors from '../../utils/colors'
 import images from '../../images/index'
-import DatePickerDialog from '../../components/datePickerDialog'
+import CustomDialog from '../../components/dialog'
+import moment from 'moment'
 
 export default class Home extends Component{
 
     constructor(props){
         super(props)
         this.state = {
-            datePickerDialogVisible: false
+            datePickerDialogVisible: false,
+            day: '',
+            month: '',
+            dayOfWeek: ''
         }
+    }
+
+    componentWillMount(){
+        this.setState({
+            day: moment(Date.now()).format('D'), 
+            month: moment(Date.now()).format('MMMM'),
+            dayOfWeek: moment(Date.now()).format('dddd')
+        })
     }
 
     changeDialogVisibility = (visible) => {
         this.setState({datePickerDialogVisible: visible})
+    }
+
+    setSelectedDate = (date) => {
+        this.setState({
+            day: moment(date.timestamp).format('D'), 
+            month: moment(date.timestamp).format('MMMM'),
+            dayOfWeek: moment(date.timestamp).format('dddd')
+        })
+        this.changeDialogVisibility(false)
     }
 
     render(){
@@ -27,16 +48,22 @@ export default class Home extends Component{
                     color: colors.lightBlue, 
                     fontSize: widthScale(20),
                     marginTop: heightScale(3)
-                }}>Month</Text>
+                }}>{this.state.month}</Text>
                 <TouchableOpacity style={styles.dateView} onPress={() => this.changeDialogVisibility(true)}>
                     <Text style={{
                         ...styles.dateText, 
                         color: colors.darkBlue, 
                         fontSize: widthScale(16)
-                    }}>Day, Date</Text>
+                    }}>{this.state.dayOfWeek + ', ' + this.state.day}</Text>
                     <Image source={images.downArrow} style={styles.downArrowImage}/> 
                 </TouchableOpacity>
-                <DatePickerDialog visible={this.state.datePickerDialogVisible} changeDialogVisibility={this.changeDialogVisibility}/>
+                <CustomDialog 
+                    title='Select Date' 
+                    visible={this.state.datePickerDialogVisible} 
+                    changeDialogVisibility={this.changeDialogVisibility}
+                    type='calendar'
+                    setSelectedDate={this.setSelectedDate}
+                />
             </ScrollView>
         )
     }
