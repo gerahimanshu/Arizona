@@ -63,7 +63,7 @@ export default class Home extends Component{
                     changeDialogVisibility={this.changeDialogVisibility}
                     type='calendar'
                     setSelectedDate={this.setSelectedDate}
-                    height='65%'
+                    height='70%'
                 />
             </ScrollView>
         )
