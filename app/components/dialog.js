@@ -8,21 +8,18 @@ import colors from '../utils/colors'
 export default class CustomDialog extends Component{
 
     render(){
-        const {visible, changeDialogVisibility, title, type, setSelectedDate} = this.props
+        const {visible, changeDialogVisibility, title, type, setSelectedDate, height} = this.props
         return(
             <Modal isVisible={visible} style={styles.modalView}>
-                <View style={styles.dialogView}>
+                <View style={{...styles.dialogView, height: height}}>
                     <View style={{paddingTop: heightScale(8), paddingBottom: heightScale(8)}}>
                         <View style={styles.header}>
-                            <TouchableOpacity onPress={() => changeDialogVisibility(false)}>
+                            <View style={styles.titleView}>
+                                <Text style={styles.titleText}>{title}</Text>
+                            </View>
+                            <TouchableOpacity style={styles.cancelView} onPress={() => changeDialogVisibility(false)}>
                                 <Text style={styles.cancelText}>Cancel</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Text style={styles.titleText}>{title}</Text>
-                            </TouchableOpacity>
-                            <View>
-                                <Text></Text>
-                            </View> 
                         </View>
                         <View style={styles.dividerView}></View>
                     </View>
@@ -45,26 +42,36 @@ const styles = StyleSheet.create({
     },
     modalView: {
         justifyContent: 'flex-end', 
-        margin: 0
+        margin: 0,
     },
     dialogView: {
-        flex: 1,
         backgroundColor: colors.white, 
-        padding: 5
+        padding: 5,
+        borderRadius: 10
     },
     header: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+    },
+    titleView: {
+        flex: 1, 
+        flexDirection: 'row', 
+        justifyContent: 'center'
     },
     cancelText:{
-        fontSize: widthScale(15)
+        fontSize: widthScale(15),
+        alignSelf: 'center'
+    },
+    cancelView: {
+        position: 'absolute', 
+        left: 0
     },
     titleText: {
         fontWeight: 'bold',
-        fontSize: widthScale(20)
+        alignSelf: 'center',
+        fontSize: widthScale(20),
     },
     dividerView: {
-        height: heightScale(2), 
+        height: heightScale(1), 
         backgroundColor: colors.grayDivider,
         marginTop: heightScale(8)
     }

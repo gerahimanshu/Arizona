@@ -22,7 +22,7 @@ export default class CustomCalendar extends React.Component {
 
     render(){
         return (
-            <View>
+            <View style={{backgroundColor: 'red',height:'50%'}}>
                 <Calendar
                     onDayPress={(day) => {this.setState({selectedDate: day})}}
                     monthFormat={'MMMM yyyy'}
