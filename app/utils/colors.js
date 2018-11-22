@@ -5,7 +5,9 @@ const colors = {
     grayDivider: '#BBBBBB',
     blue: '#273C75',
     lightBlue: 'rgb(40,166,231)',
-    darkBlue: 'rgb(9,21,61)'
+    darkBlue: 'rgb(9,21,61)',
+    availableGreen: 'rgb(126,211,33)',
+    bookedOrange: 'rgb(245,166,35)'
 }
 
 export default colors;

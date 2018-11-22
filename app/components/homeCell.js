@@ -1,6 +1,8 @@
 import React from 'react'
-import {View, StyleSheet, ImageBackground} from 'react-native'
+import {View, StyleSheet, ImageBackground, Text, Image} from 'react-native'
 import images from '../images/index'
+import {widthScale, heightScale} from '../utils/utils'
+import colors from '../utils/colors'
 
 const getImageForIndex = (index) => {
     if(index == 0){
@@ -25,22 +27,49 @@ const getImageForIndex = (index) => {
 }
 
 const HomeCell = (props) => {
-    const {index} = props
+    const {index, title, status} = props
     const image = getImageForIndex(index)
     return (
-        <ImageBackground source={image}>
-            <View>
-                <Text></Text>
-                <View>
-                    <Text></Text>
-                </View>
+        <View style={styles.container}>
+            <Image style={styles.imageThumbnail} source={image} />
+            <View style={styles.innerView}>
+                <Text style={styles.title}>{title}</Text>
+                <Text style={{...styles.statusText, backgroundColor: status ? colors.bookedOrange : colors.availableGreen}}>{status ? 'Booked' : 'Available'}</Text>
             </View>
-        </ImageBackground>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-
+    container: {
+        flex: 1, 
+        flexDirection: 'column'
+    },
+    innerView: {
+        position: 'absolute', 
+        bottom: heightScale(40), 
+        alignSelf: 'center'
+    },
+    statusView: {
+        padding: widthScale(10),
+        borderRadius: 10,
+        backgroundColor: 'blue'
+    },
+    imageThumbnail: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    title: {
+        fontSize: widthScale(12),
+        color: colors.white, 
+        alignSelf: 'center'
+    },
+    statusText: {
+        fontSize: widthScale(14),
+        color: colors.white,
+        padding: widthScale(10), 
+        borderRadius: widthScale(20)
+    }
 })
 
 export default HomeCell

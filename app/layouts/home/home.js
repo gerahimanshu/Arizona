@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
-import {ScrollView, Text, StyleSheet, Image, TouchableOpacity} from 'react-native'
+import {ScrollView, Text, View, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native'
 import {heightScale, widthScale} from '../../utils/utils'
 import colors from '../../utils/colors'
 import images from '../../images/index'
 import CustomDialog from '../../components/dialog'
 import moment from 'moment'
 import {getTables} from '../../firebase/queries'
+import HomeCell from '../../components/homeCell'
 
 export default class Home extends Component{
 
@@ -15,7 +16,8 @@ export default class Home extends Component{
             datePickerDialogVisible: false,
             day: '',
             month: '',
-            dayOfWeek: ''
+            dayOfWeek: '',
+            tables: []
         }
     }
 
@@ -26,6 +28,14 @@ export default class Home extends Component{
             dayOfWeek: moment(Date.now()).format('dddd')
         })
         getTables()
+        .then(res => {
+            if(res && res.length){
+                this.setState({tables: res})
+            }
+        })
+        .catch(err => {
+
+        })
     }
 
     changeDialogVisibility = (visible) => {
@@ -59,14 +69,26 @@ export default class Home extends Component{
                     }}>{this.state.dayOfWeek + ', ' + this.state.day}</Text>
                     <Image source={images.downArrow} style={styles.downArrowImage}/> 
                 </TouchableOpacity>
-                <CustomDialog 
-                    title='Select Date' 
-                    visible={this.state.datePickerDialogVisible} 
-                    changeDialogVisibility={this.changeDialogVisibility}
-                    type='calendar'
-                    setSelectedDate={this.setSelectedDate}
-                    height='70%'
-                />
+                <View style={{flex: 1}}>
+                    <FlatList
+                        data={this.state.tables}
+                        renderItem={({item, index}) => <HomeCell index={index} title={item.title} status={item.status}/>}
+                        keyExtractor={(item) => item.id.toString()}
+                        numColumns={2}
+                        style={{flex: 1}}
+                    />
+                </View>
+                {
+                    this.state.datePickerDialogVisible && 
+                    <CustomDialog 
+                        title='Select Date' 
+                        visible={this.state.datePickerDialogVisible} 
+                        changeDialogVisibility={this.changeDialogVisibility}
+                        type='calendar'
+                        setSelectedDate={this.setSelectedDate}
+                        height='70%'
+                    />
+                }
             </ScrollView>
         )
     }

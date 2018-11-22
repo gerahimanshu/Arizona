@@ -1,4 +1,5 @@
 import {firebaseApp} from './firebaseConfig'
+import {isEmpty} from 'lodash'
 
 /**
  * Makes an entry to firebase authentication for an anonymous user logged In..
@@ -79,11 +80,40 @@ export const checkForLogin = (email, password) => {
 export const getTables = () => {
     const db = firebaseApp.database()
     return new Promise((resolve, reject) => {
-        db.ref('Tables').once('value', data => {
-            if(data){
-                const dataJSON = data.toJSON()
-                console.warn('data', dataJSON)
-            }
+        db.ref('Bookings').once('value', bookings => {
+            const bookingJSON = bookings.toJSON()
+            db.ref('Tables').once('value', tables => {
+                const tableJSON = tables.toJSON()
+                if(tableJSON && !isEmpty(tableJSON)){
+                    if(bookings && !isEmpty(bookings)){
+                        const tablesWithStatus = getTablesWithStatus(tableJSON, bookingJSON)
+                        resolve(tablesWithStatus)
+                    }else{
+                        const tablesWithStatus = getTablesWithStatus(tableJSON, {})
+                        resolve(tablesWithStatus)
+                    }
+                }else{
+                    resolve([])
+                }
+            })
         })
     })
+}
+
+const getTablesWithStatus = (tables, bookings) => {
+    let tablesWithStatus = []
+    let bookingStatus = {}
+    for(let key in bookings){
+        if(bookings.hasOwnProperty(key)){
+            const booking = bookings[key]
+            bookingStatus[booking.tableId] = booking
+        }
+    }
+    for(let key in tables){
+        if(tables.hasOwnProperty(key)){
+            const table = tables[key]
+            tablesWithStatus.push({...table, status: !!bookingStatus[table.id]})
+        }
+    }
+    return tablesWithStatus
 }
