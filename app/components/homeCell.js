@@ -30,7 +30,7 @@ const HomeCell = (props) => {
     const {index, title, status} = props
     const image = getImageForIndex(index)
     return (
-        <View style={styles.container}>
+        <View>
             <Image style={styles.imageThumbnail} source={image} />
             <View style={styles.innerView}>
                 <Text style={styles.title}>{title}</Text>
@@ -41,10 +41,6 @@ const HomeCell = (props) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1, 
-        flexDirection: 'column'
-    },
     innerView: {
         position: 'absolute', 
         bottom: heightScale(40), 
