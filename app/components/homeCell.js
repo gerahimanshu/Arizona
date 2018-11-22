@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
         fontSize: widthScale(14),
         color: colors.white,
         padding: widthScale(10), 
-        borderRadius: widthScale(20)
+        borderRadius: widthScale(20),
+        overflow: 'hidden'
     }
 })
 
