@@ -75,3 +75,15 @@ export const checkForLogin = (email, password) => {
         })
     })
 } 
+
+export const getTables = () => {
+    const db = firebaseApp.database()
+    return new Promise((resolve, reject) => {
+        db.ref('Tables').once('value', data => {
+            if(data){
+                const dataJSON = data.toJSON()
+                console.warn('data', dataJSON)
+            }
+        })
+    })
+}

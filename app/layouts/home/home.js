@@ -5,6 +5,7 @@ import colors from '../../utils/colors'
 import images from '../../images/index'
 import CustomDialog from '../../components/dialog'
 import moment from 'moment'
+import {getTables} from '../../firebase/queries'
 
 export default class Home extends Component{
 
@@ -24,6 +25,7 @@ export default class Home extends Component{
             month: moment(Date.now()).format('MMMM'),
             dayOfWeek: moment(Date.now()).format('dddd')
         })
+        getTables()
     }
 
     changeDialogVisibility = (visible) => {
