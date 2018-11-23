@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, StyleSheet, ImageBackground, Text, Image} from 'react-native'
+import {View, StyleSheet, TouchableOpacity, Text, Image} from 'react-native'
 import images from '../images/index'
 import {widthScale, heightScale} from '../utils/utils'
 import colors from '../utils/colors'
@@ -30,13 +30,13 @@ const HomeCell = (props) => {
     const {index, title, status} = props
     const image = getImageForIndex(index)
     return (
-        <View>
+        <TouchableOpacity>
             <Image style={styles.imageThumbnail} source={image} />
             <View style={styles.innerView}>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={{...styles.statusText, backgroundColor: status ? colors.bookedOrange : colors.availableGreen}}>{status ? 'Booked' : 'Available'}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

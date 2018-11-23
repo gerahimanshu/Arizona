@@ -14,6 +14,7 @@ export default class Home extends Component{
         super(props)
         this.state = {
             datePickerDialogVisible: false,
+            timePickerDialogVisible: false,
             day: '',
             month: '',
             dayOfWeek: '',
@@ -38,8 +39,17 @@ export default class Home extends Component{
         })
     }
 
-    changeDialogVisibility = (visible) => {
-        this.setState({datePickerDialogVisible: visible})
+    changeDialogVisibility = (visible, type) => {
+        if(type && type == 'calendar'){
+            this.setState({datePickerDialogVisible: visible})
+            this.setState({timePickerDialogVisible: !visible})
+        }else if(type && type == 'timepicker'){
+            this.setState({timePickerDialogVisible: !visible})
+            this.setState({datePickerDialogVisible: visible})
+        }else{
+            this.setState({timePickerDialogVisible: visible})
+            this.setState({datePickerDialogVisible: visible})
+        }
     }
 
     setSelectedDate = (date) => {
@@ -48,7 +58,11 @@ export default class Home extends Component{
             month: moment(date.timestamp).format('MMMM'),
             dayOfWeek: moment(date.timestamp).format('dddd')
         })
-        this.changeDialogVisibility(false)
+        this.changeDialogVisibility(false, 'timepicker')
+    }
+
+    setSelectedTime = (time) => {
+
     }
 
     render(){
@@ -61,7 +75,7 @@ export default class Home extends Component{
                     fontSize: widthScale(20),
                     marginTop: heightScale(3)
                 }}>{this.state.month}</Text>
-                <TouchableOpacity style={styles.dateView} onPress={() => this.changeDialogVisibility(true)}>
+                <TouchableOpacity style={styles.dateView} onPress={() => this.changeDialogVisibility(true, 'calendar')}>
                     <Text style={{
                         ...styles.dateText, 
                         color: colors.darkBlue, 
@@ -69,7 +83,7 @@ export default class Home extends Component{
                     }}>{this.state.dayOfWeek + ', ' + this.state.day}</Text>
                     <Image source={images.downArrow} style={styles.downArrowImage}/> 
                 </TouchableOpacity>
-                <View style={{flex: 1}}>
+                <View style={styles.tablesView}>
                     <FlatList
                         data={this.state.tables}
                         renderItem={({item, index}) => <HomeCell index={index} title={item.title} status={item.status}/>}
@@ -87,6 +101,17 @@ export default class Home extends Component{
                         type='calendar'
                         setSelectedDate={this.setSelectedDate}
                         height='70%'
+                    />
+                }
+                {
+                    this.state.timePickerDialogVisible &&
+                    <CustomDialog 
+                        title='Select Time' 
+                        visible={this.state.timePickerDialogVisible} 
+                        changeDialogVisibility={this.changeDialogVisibility}
+                        type='timepicker'
+                        setSelectedTime={this.setSelectedTime}
+                        height='50%'
                     />
                 }
             </ScrollView>
@@ -114,5 +139,9 @@ const styles = StyleSheet.create({
     },
     downArrowImage: {
         marginLeft: widthScale(3)
+    },
+    tablesView: {
+        flex: 1,
+        marginTop: heightScale(10)
     }
 })

@@ -21,7 +21,9 @@ const images = {
         img2: require('./homeCells/img2.png'),
         img3: require('./homeCells/img3.png'),
         img4: require('./homeCells/img4.png')
-    }
+    },
+    upArrowFilled: require('./upArrowFilled/up.png'),
+    downArrowFilled: require('./downArrowFilled/down.png')
 }
 
 export default images

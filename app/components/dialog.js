@@ -3,6 +3,7 @@ import {Text, View, StyleSheet, TouchableOpacity} from 'react-native'
 import Modal from 'react-native-modal'
 import {heightScale, widthScale} from '../utils/utils'
 import CustomCalendar from './calendar'
+import TimePicker from './timePicker'
 import colors from '../utils/colors'
 
 export default class CustomDialog extends Component{
@@ -25,9 +26,9 @@ export default class CustomDialog extends Component{
                     </View>
                     <View style={styles.container}>
                         {
-                            type == 'calendar' ? (
-                                <CustomCalendar setSelectedDate={setSelectedDate}/>
-                            ) : <Text></Text>
+                            (type == 'calendar') ? 
+                                <CustomCalendar setSelectedDate={setSelectedDate}/> : 
+                            (type == 'timepicker') ? <TimePicker/> : <Text></Text>
                         }
                     </View>
                 </View>
