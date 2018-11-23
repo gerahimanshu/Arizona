@@ -9,7 +9,7 @@ import colors from '../utils/colors'
 export default class CustomDialog extends Component{
 
     render(){
-        const {visible, changeDialogVisibility, title, type, setSelectedDate, height} = this.props
+        const {visible, changeDialogVisibility, title, type, setSelectedDate, setSelectedTime, height} = this.props
         return(
             <Modal isVisible={visible} style={styles.modalView}>
                 <View style={{...styles.dialogView, height: height}}>
@@ -28,7 +28,7 @@ export default class CustomDialog extends Component{
                         {
                             (type == 'calendar') ? 
                                 <CustomCalendar setSelectedDate={setSelectedDate}/> : 
-                            (type == 'timepicker') ? <TimePicker/> : <Text></Text>
+                            (type == 'timepicker') ? <TimePicker setSelectedTime={setSelectedTime}/> : <Text></Text>
                         }
                     </View>
                 </View>

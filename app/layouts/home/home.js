@@ -61,8 +61,8 @@ export default class Home extends Component{
         this.changeDialogVisibility(false, 'timepicker')
     }
 
-    setSelectedTime = (time) => {
-
+    setSelectedTime = (fromTime, toTime) => {
+        console.warn(fromTime, toTime)
     }
 
     render(){
