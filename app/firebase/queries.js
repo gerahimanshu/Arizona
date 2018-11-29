@@ -1,5 +1,6 @@
 import {firebaseApp} from './firebaseConfig'
 import {isEmpty} from 'lodash'
+import moment from 'moment'
 
 /**
  * Makes an entry to firebase authentication for an anonymous user logged In..
@@ -77,7 +78,7 @@ export const checkForLogin = (email, password) => {
     })
 } 
 
-export const getTables = () => {
+export const getTables = (from, to) => {
     const db = firebaseApp.database()
     return new Promise((resolve, reject) => {
         db.ref('Bookings').once('value', bookings => {
@@ -86,10 +87,10 @@ export const getTables = () => {
                 const tableJSON = tables.toJSON()
                 if(tableJSON && !isEmpty(tableJSON)){
                     if(bookings && !isEmpty(bookings)){
-                        const tablesWithStatus = getTablesWithStatus(tableJSON, bookingJSON)
+                        const tablesWithStatus = getTablesWithStatus(tableJSON, bookingJSON, from, to)
                         resolve(tablesWithStatus)
                     }else{
-                        const tablesWithStatus = getTablesWithStatus(tableJSON, {})
+                        const tablesWithStatus = getTablesWithStatus(tableJSON, {}, from, to)
                         resolve(tablesWithStatus)
                     }
                 }else{
@@ -100,7 +101,7 @@ export const getTables = () => {
     })
 }
 
-const getTablesWithStatus = (tables, bookings) => {
+const getTablesWithStatus = (tables, bookings, from, to) => {
     let tablesWithStatus = []
     let bookingStatus = {}
     for(let key in bookings){
@@ -112,7 +113,17 @@ const getTablesWithStatus = (tables, bookings) => {
     for(let key in tables){
         if(tables.hasOwnProperty(key)){
             const table = tables[key]
-            tablesWithStatus.push({...table, status: !!bookingStatus[table.id]})
+            if(bookingStatus[table.id]){
+                if(bookingStatus[table.id].startTime && bookingStatus[table.id].endTime){
+                    if((from >= bookingStatus[table.id].startTime && from <= bookingStatus[table.id].endTime) || (to >= bookingStatus[table.id].startTime && to <= bookingStatus[table.id].endTime)){
+                        tablesWithStatus.push({...table, status: true})
+                    }else{
+                        tablesWithStatus.push({...table, status: false})
+                    }
+                }
+            }else{
+                tablesWithStatus.push({...table, status: false})
+            }
         }
     }
     return tablesWithStatus

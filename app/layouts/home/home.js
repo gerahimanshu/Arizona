@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {ScrollView, Text, View, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native'
+import {ScrollView, Text, View, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator} from 'react-native'
 import {heightScale, widthScale} from '../../utils/utils'
 import colors from '../../utils/colors'
 import images from '../../images/index'
@@ -18,6 +18,8 @@ export default class Home extends Component{
             day: '',
             month: '',
             dayOfWeek: '',
+            dateString: '',
+            loading: false, 
             tables: []
         }
     }
@@ -26,16 +28,18 @@ export default class Home extends Component{
         this.setState({
             day: moment(Date.now()).format('D'), 
             month: moment(Date.now()).format('MMMM'),
-            dayOfWeek: moment(Date.now()).format('dddd')
+            dayOfWeek: moment(Date.now()).format('dddd'),
+            loading: true
         })
         getTables()
         .then(res => {
             if(res && res.length){
                 this.setState({tables: res})
             }
+            this.setState({loading: false})
         })
         .catch(err => {
-
+            this.setState({loading: false})
         })
     }
 
@@ -56,65 +60,94 @@ export default class Home extends Component{
         this.setState({
             day: moment(date.timestamp).format('D'), 
             month: moment(date.timestamp).format('MMMM'),
-            dayOfWeek: moment(date.timestamp).format('dddd')
+            dayOfWeek: moment(date.timestamp).format('dddd'),
+            dateString: date.dateString
         })
         this.changeDialogVisibility(false, 'timepicker')
     }
 
     setSelectedTime = (fromTime, toTime) => {
-        console.warn(fromTime, toTime)
+        this.changeDialogVisibility(false)
+        if(this.state.dateString != ''){
+            const fromTimeStamp = moment(this.state.dateString + " " + fromTime.hour + ":" + fromTime.minute + " " + fromTime.am_pm, "YYYY-MM-DD hh:mm a").unix()
+            const toTimeStamp = moment(this.state.dateString + " " + toTime.hour + ":" + toTime.minute + " " + toTime.am_pm, "YYYY-MM-DD hh:mm a").unix()
+            this.setState({loading: true})
+            getTables(fromTimeStamp, toTimeStamp)
+            .then(res => {
+                console.log(res)
+                if(res && res.length){
+                    this.setState({tables: res})
+                }
+                this.setState({loading: false})
+            })
+            .catch(err => {
+                this.setState({loading: false})
+            })
+        }
     }
 
     render(){
         return(
-            <ScrollView styles={styles.container}>
-                <Text style={styles.tablesText}>Tables</Text>
-                <Text style={{
-                    ...styles.dateText, 
-                    color: colors.lightBlue, 
-                    fontSize: widthScale(20),
-                    marginTop: heightScale(3)
-                }}>{this.state.month}</Text>
-                <TouchableOpacity style={styles.dateView} onPress={() => this.changeDialogVisibility(true, 'calendar')}>
+            <View style={styles.container}>
+                <ScrollView styles={styles.container}>
+                    <Text style={styles.tablesText}>Tables</Text>
                     <Text style={{
                         ...styles.dateText, 
-                        color: colors.darkBlue, 
-                        fontSize: widthScale(16)
-                    }}>{this.state.dayOfWeek + ', ' + this.state.day}</Text>
-                    <Image source={images.downArrow} style={styles.downArrowImage}/> 
-                </TouchableOpacity>
-                <View style={styles.tablesView}>
-                    <FlatList
-                        data={this.state.tables}
-                        renderItem={({item, index}) => <HomeCell index={index} title={item.title} status={item.status}/>}
-                        keyExtractor={(item) => item.id.toString()}
-                        numColumns={2}
-                        style={{flex: 1}}
-                    />
-                </View>
+                        color: colors.lightBlue, 
+                        fontSize: widthScale(20),
+                        marginTop: heightScale(3)
+                    }}>{this.state.month}</Text>
+                    <TouchableOpacity style={styles.dateView} onPress={() => this.changeDialogVisibility(true, 'calendar')}>
+                        <Text style={{
+                            ...styles.dateText, 
+                            color: colors.darkBlue, 
+                            fontSize: widthScale(16)
+                        }}>{this.state.dayOfWeek + ', ' + this.state.day}</Text>
+                        <Image source={images.downArrow} style={styles.downArrowImage}/> 
+                    </TouchableOpacity>
+                    <View style={styles.tablesView}>
+                        <FlatList
+                            data={this.state.tables}
+                            renderItem={({item, index}) => <HomeCell index={index} title={item.title} status={item.status}/>}
+                            keyExtractor={(item) => item.id.toString()}
+                            numColumns={2}
+                            style={{flex: 1}}
+                            columnWrapperStyle={{flex: 1,
+                                justifyContent: "space-around"}}
+                        />
+                    </View>
+                    {
+                        this.state.datePickerDialogVisible && 
+                        <CustomDialog 
+                            title='Select Date' 
+                            visible={this.state.datePickerDialogVisible} 
+                            changeDialogVisibility={this.changeDialogVisibility}
+                            type='calendar'
+                            setSelectedDate={this.setSelectedDate}
+                            height='70%'
+                        />
+                    }
+                    {
+                        this.state.timePickerDialogVisible &&
+                        <CustomDialog 
+                            title='Select Time' 
+                            visible={this.state.timePickerDialogVisible} 
+                            changeDialogVisibility={this.changeDialogVisibility}
+                            type='timepicker'
+                            setSelectedTime={this.setSelectedTime}
+                            height='50%'
+                        />
+                    }
+                </ScrollView>
                 {
-                    this.state.datePickerDialogVisible && 
-                    <CustomDialog 
-                        title='Select Date' 
-                        visible={this.state.datePickerDialogVisible} 
-                        changeDialogVisibility={this.changeDialogVisibility}
-                        type='calendar'
-                        setSelectedDate={this.setSelectedDate}
-                        height='70%'
-                    />
+                    this.state.loading && (
+                        <View style={styles.loader}>
+                            <ActivityIndicator animating={true} size='large'/>
+                        </View>
+                    )
+                    
                 }
-                {
-                    this.state.timePickerDialogVisible &&
-                    <CustomDialog 
-                        title='Select Time' 
-                        visible={this.state.timePickerDialogVisible} 
-                        changeDialogVisibility={this.changeDialogVisibility}
-                        type='timepicker'
-                        setSelectedTime={this.setSelectedTime}
-                        height='50%'
-                    />
-                }
-            </ScrollView>
+            </View>
         )
     }
 }
@@ -142,6 +175,16 @@ const styles = StyleSheet.create({
     },
     tablesView: {
         flex: 1,
+        flexDirection: 'row',
         marginTop: heightScale(10)
+    },
+    loader: {
+        position: 'absolute', 
+        top: 0, 
+        bottom: 0, 
+        left: 0, 
+        right: 0,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
