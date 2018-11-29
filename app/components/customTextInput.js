@@ -29,6 +29,7 @@ const CustomTextInput = (props) => {
                         placeholder={strings.password} 
                         placeholderTextColor={colors.white}
                         secureTextEntry={true}
+                        autoCapitalize='none'
                         style={styles.textInput}
                         onChangeText={onPasswordChange}
                     />

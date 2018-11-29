@@ -48,7 +48,7 @@ export default class Login extends Component{
         }
         
         this.setState({loading: true})
-        checkForLogin(this.state.email, this.state.password)
+        checkForLogin(this.state.email.toLowerCase().trim(), this.state.password)
         .then(res => {
             return loginAnonymously()
         })

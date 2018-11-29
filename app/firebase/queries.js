@@ -115,7 +115,8 @@ const getTablesWithStatus = (tables, bookings, from, to) => {
             const table = tables[key]
             if(bookingStatus[table.id]){
                 if(bookingStatus[table.id].startTime && bookingStatus[table.id].endTime){
-                    if((from >= bookingStatus[table.id].startTime && from <= bookingStatus[table.id].endTime) || (to >= bookingStatus[table.id].startTime && to <= bookingStatus[table.id].endTime)){
+                    let overlap = dateRangeOverlaps(from, to, bookingStatus[table.id].startTime, bookingStatus[table.id].endTime)
+                    if(overlap > 0){
                         tablesWithStatus.push({...table, status: true})
                     }else{
                         tablesWithStatus.push({...table, status: false})
@@ -127,4 +128,11 @@ const getTablesWithStatus = (tables, bookings, from, to) => {
         }
     }
     return tablesWithStatus
+}
+
+const dateRangeOverlaps = (a_start, a_end, b_start, b_end) => {
+    if (a_start <= b_start && b_start <= a_end) return true; // b starts in a
+    if (a_start <= b_end   && b_end   <= a_end) return true; // b ends in a
+    if (b_start <  a_start && a_end   <  b_end) return true; // a in b
+    return false;
 }

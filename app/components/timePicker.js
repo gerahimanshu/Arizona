@@ -185,34 +185,34 @@ class TimePicker extends Component {
                 <View style={styles.innerView}>
                     <Text style={styles.fromToText}>From</Text>
                     <View style={styles.digitView}>
-                        <TouchableOpacity onPress={() => this.increaseFromHourCount()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.increaseFromHourCount()}>
                             <Image source={images.upArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                         <Text style={styles.digitText}>
                             {(this.state.from.hour.toString().length == 1) ? '0'+this.state.from.hour : this.state.from.hour}
                         </Text>
-                        <TouchableOpacity onPress={() => this.decreaseFromHourCount()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.decreaseFromHourCount()}>
                             <Image source={images.downArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                     </View>
                     <Text style={styles.fromToText}>:</Text>
                     <View style={styles.digitView}>
-                        <TouchableOpacity onPress={() => this.increaseFromMinuteCount()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.increaseFromMinuteCount()}>
                             <Image source={images.upArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                         <Text style={styles.digitText}>
                             {(this.state.from.minute.toString().length == 1) ? '0'+this.state.from.minute : this.state.from.minute}
                         </Text>
-                        <TouchableOpacity onPress={() => this.decreaseFromMinuteCount()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.decreaseFromMinuteCount()}>
                             <Image source={images.downArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.colonView}>
-                        <TouchableOpacity onPress={() => this.changeFromAmPm()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.changeFromAmPm()}>
                             <Image source={images.upArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                         <Text style={styles.fromToText}>{this.state.from.am_pm}</Text>
-                        <TouchableOpacity onPress={() => this.changeFromAmPm()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.changeFromAmPm()}>
                             <Image source={images.downArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                     </View>
@@ -220,34 +220,34 @@ class TimePicker extends Component {
                 <View style={styles.innerView}>
                     <Text style={styles.fromToText}>{"   To  "}</Text>
                     <View style={styles.digitView}>
-                        <TouchableOpacity onPress={() => this.increaseToHourCount()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.increaseToHourCount()}>
                             <Image source={images.upArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                         <Text style={styles.digitText}>
                             {(this.state.to.hour.toString().length == 1) ? '0'+this.state.to.hour : this.state.to.hour}
                         </Text>
-                        <TouchableOpacity onPress={() => this.decreaseToHourCount()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.decreaseToHourCount()}>
                             <Image source={images.downArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                     </View> 
                     <Text style={styles.fromToText}>:</Text>
                     <View style={styles.digitView}>
-                        <TouchableOpacity onPress={() => this.increaseToMinuteCount()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.increaseToMinuteCount()}>
                             <Image source={images.upArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                         <Text style={styles.digitText}>
                             {(this.state.to.minute.toString().length == 1) ? '0'+this.state.to.minute : this.state.to.minute}
                         </Text>
-                        <TouchableOpacity onPress={() => this.decreaseToMinuteCount()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.decreaseToMinuteCount()}>
                             <Image source={images.downArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.colonView}>
-                        <TouchableOpacity onPress={() => this.changeToAmPm()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.changeToAmPm()}>
                             <Image source={images.upArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                         <Text style={styles.fromToText}>{this.state.to.am_pm}</Text>
-                        <TouchableOpacity onPress={() => this.changeToAmPm()}>
+                        <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.changeToAmPm()}>
                             <Image source={images.downArrowFilled} style={styles.arrowStyle} />
                         </TouchableOpacity>
                     </View>

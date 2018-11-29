@@ -135,7 +135,7 @@ export default class Home extends Component{
                             changeDialogVisibility={this.changeDialogVisibility}
                             type='timepicker'
                             setSelectedTime={this.setSelectedTime}
-                            height='50%'
+                            height='70%'
                         />
                     }
                 </ScrollView>
