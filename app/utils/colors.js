@@ -8,7 +8,9 @@ const colors = {
     darkBlue: 'rgb(9,21,61)',
     availableGreen: 'rgb(126,211,33)',
     bookedOrange: 'rgb(245,166,35)',
-    blackBackground: 'rgb(59,59,59)'
+    blackBackground: 'rgb(59,59,59)',
+    green: 'rgb(65,117,5)',
+    yellow: 'rgb(245,166,35)'
 }
 
 export default colors;

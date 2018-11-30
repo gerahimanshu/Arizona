@@ -78,6 +78,13 @@ export const checkForLogin = (email, password) => {
     })
 } 
 
+/**
+ * Fetch tables from the firebase database..
+ * Filters the tables according to the from date timestamp and to date timestamp..
+ * Returns the the array of tables with booking status true if booked and false otherwise..
+ * @param {String} from 
+ * @param {String} to 
+ */
 export const getTables = (from, to) => {
     const db = firebaseApp.database()
     return new Promise((resolve, reject) => {
@@ -101,6 +108,28 @@ export const getTables = (from, to) => {
     })
 }
 
+export const getBookings = () => {
+    const db = firebaseApp.database()
+    return new Promise((resolve, reject) => {
+        db.ref('Bookings').once('value', bookings => {
+            const bookingsJSON = bookings.toJSON()
+            if(bookingsJSON && !isEmpty(bookingsJSON)){
+                resolve(Object.values(bookingsJSON))
+            }else{
+                resolve([])
+            }
+        })
+    })
+}
+
+/**
+ * Compares the tables and bookings so that tables with their booking status can be returned..
+ * Filters the tables for making it easy to determine the booking status of tables..
+ * @param {Object} tables 
+ * @param {Object} bookings 
+ * @param {String} from 
+ * @param {String} to 
+ */
 const getTablesWithStatus = (tables, bookings, from, to) => {
     let tablesWithStatus = []
     let bookingStatus = {}
@@ -130,6 +159,13 @@ const getTablesWithStatus = (tables, bookings, from, to) => {
     return tablesWithStatus
 }
 
+/**
+ * Compares 2 sets of timestamps to check whether they overlap..
+ * @param {String} a_start 
+ * @param {String} a_end 
+ * @param {String} b_start 
+ * @param {String} b_end 
+ */
 const dateRangeOverlaps = (a_start, a_end, b_start, b_end) => {
     if (a_start <= b_start && b_start <= a_end) return true; // b starts in a
     if (a_start <= b_end   && b_end   <= a_end) return true; // b ends in a
